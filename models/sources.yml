@@ -1,0 +1,12 @@
+sources:
+  - name: public
+    description: Raw data from CSV files
+    database: postgres
+    schema: public
+
+    tables:
+      - name: 2016Census_G01_NSW_LGA
+      - name: 2016Census_G02_NSW_LGA
+      - name: listings
+      - name: nsw_lga_code
+      - name: nsw_lga_suburb
