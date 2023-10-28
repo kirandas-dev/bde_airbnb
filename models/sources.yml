@@ -10,3 +10,4 @@ sources:
       - name: listings
       - name: nsw_lga_code
       - name: nsw_lga_suburb
+      - name: hosting_listings_interim

@@ -4,12 +4,24 @@
       target_schema='public',
       unique_key='HOST_ID',
       strategy='timestamp',
-      updated_at='SCRAPED_DATE'
-    )
+      updated_at='SCRAPED_DATE',
+       )
 }}
 
-select * from {{ source('public', 'listings') }}
-{% endsnapshot %}
 
--- After the snapshot, call the custom macro to update `dbt_valid_to`
-{{ update_snapshot('public', 'host_snapshot') }}
+with source as (
+    select *
+    from {{ source('public', 'listings') }}
+),
+host as (
+    select DISTINCT
+       SCRAPED_DATE,
+       HOST_ID,
+       HOST_NAME,
+       HOST_SINCE,
+       HOST_IS_SUPERHOST,
+       HOST_NEIGHBOURHOOD
+    from source
+)
+select * from host
+{% endsnapshot %}
