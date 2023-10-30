@@ -17,5 +17,5 @@ models:
     snapshots:
       +hosting_listings_snapshot
     staging:
-      +materialized: table
+      +materialized: view
       +schema: staging   
