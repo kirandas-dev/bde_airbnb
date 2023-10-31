@@ -1,7 +1,7 @@
 {% snapshot property_snapshot %}
 {{
     config(
-      target_schema='public',
+      target_schema='raw',
       unique_key='listing_id',
       strategy='timestamp',
       updated_at='SCRAPED_DATE',
@@ -9,7 +9,7 @@
 }}
 with source as (
     select *
-    from {{ source('public', 'listings') }}
+    from {{ source('raw', 'listings') }}
 ),
 property as (
     select DISTINCT

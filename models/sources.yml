@@ -1,8 +1,8 @@
 sources:
-  - name: public
+  - name: raw
     description: Raw data from CSV files
     database: postgres
-    schema: public
+    schema: raw
 
     tables:
       - name: 2016Census_G01_NSW_LGA

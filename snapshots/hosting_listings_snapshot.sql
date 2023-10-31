@@ -1,8 +1,8 @@
 {% snapshot host_snapshot %}
 {{
     config(
-      target_schema='public',
-      unique_key='HOST_ID',
+      target_schema='raw',
+      unique_key='listing_id',
       strategy='timestamp',
       updated_at='SCRAPED_DATE',
        )
@@ -11,7 +11,7 @@
 
 with source as (
     select *
-    from {{ source('public', 'listings') }}
+    from {{ source('raw', 'listings') }}
 ),
 host as (
     select DISTINCT

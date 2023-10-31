@@ -6,12 +6,12 @@
 }}
  
 with stg_listings as (
-    select * from {{ source('public', 'listings') }}
+    select * from {{ source('raw', 'listings') }}
 )
  
 SELECT
-    listing_id,
-    host_id,
+    CAST(host_id AS INT) as host_id, -- Cast host_id to integer
+    CAST(listing_id AS INT) as listing_id, -- Cast listing_id to integer
     to_date(scraped_date, 'YYYY-MM-DD') as date,
     price,
     accommodates,
