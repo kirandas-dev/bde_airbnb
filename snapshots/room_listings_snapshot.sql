@@ -16,9 +16,8 @@ room as (
         SCRAPED_DATE,
         host_id,
         listing_id,
-        room_type,
-        accommodates, 
-        price 
+        room_type
+        
     from source
 )
 select * from room

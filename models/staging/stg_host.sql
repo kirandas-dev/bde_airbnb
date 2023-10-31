@@ -45,32 +45,35 @@ handle_nulls as (
 ),
 
 
--- Fill missing values in host_neighbourhood
-fill_missing_values as (
+stg_host AS (
     SELECT
-        h.scraped_date,
+        h.scraped_date AS date,
         h.host_id,
         h.host_name,
-        host_since,
-        host_is_superhost,
-        CASE WHEN h.host_neighbourhood = '' THEN (
-            SELECT suburb_name
-            FROM {{ ref('stg_suburb') }} s
-            JOIN {{ ref('property_snapshot') }} p ON s.lga_name = p.listing_neighbourhood
-            WHERE p.host_id = h.host_id 
-            ORDER BY RANDOM()
-            LIMIT 1
-        )
-        ELSE h.host_neighbourhood
-        END AS host_neighbourhood,
+        h.host_since,
+        h.host_is_superhost,
+        COALESCE(
+            CASE
+                WHEN h.host_neighbourhood = '' THEN s.suburb_name
+                ELSE h.host_neighbourhood
+            END,
+            s.suburb_name
+        ) AS host_neighbourhood,
         h.dbt_scd_id,
         h.dbt_updated_at,
         h.dbt_valid_from,
         h.dbt_valid_to
     FROM handle_nulls h
+    LEFT JOIN (
+        SELECT DISTINCT ON (p.host_id)
+            p.host_id,
+            s.suburb_name
+        FROM {{ ref('property_snapshot') }} p
+        JOIN {{ ref('stg_suburb') }} s ON s.lga_name = p.listing_neighbourhood
+    ) s ON h.host_id = s.host_id
 )
 
 
 
 -- Select the final result
-select * from fill_missing_values
+select * from stg_host

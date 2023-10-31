@@ -24,3 +24,6 @@ property as (
 )
 select * from property
 {% endsnapshot %}
+
+
+
