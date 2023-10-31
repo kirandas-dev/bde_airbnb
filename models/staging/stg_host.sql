@@ -16,6 +16,7 @@ standardize_host_since as (
             WHEN host_since IS NULL OR host_since !~ '^[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}$' THEN '01/01/1900' ELSE host_since END as host_since,
         scraped_date,
         host_id,
+        listing_id,
         host_name,
         host_is_superhost,
         host_neighbourhood,
@@ -33,6 +34,7 @@ handle_nulls as (
     select
         scraped_date,
         host_id,
+        listing_id,
         host_name,
         TO_CHAR(TO_DATE(host_since, 'DD/MM/YYYY'), 'YYYY-MM-DD') as host_since,
         COALESCE(NULLIF(host_is_superhost, 'NaN'), MAX(COALESCE(NULLIF(host_is_superhost, 'NaN'), '')) OVER (PARTITION BY host_id)) AS host_is_superhost,
@@ -47,8 +49,9 @@ handle_nulls as (
 
 stg_host AS (
     SELECT
-        h.scraped_date AS date,
+        to_date(h.scraped_date, 'YYYY-MM-DD') as date,
         h.host_id,
+        h.listing_id,
         h.host_name,
         h.host_since,
         h.host_is_superhost,

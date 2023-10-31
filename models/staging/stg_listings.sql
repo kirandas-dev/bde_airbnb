@@ -12,11 +12,11 @@ with stg_listings as (
 SELECT
     listing_id,
     host_id,
-    scraped_date as date,
+    to_date(scraped_date, 'YYYY-MM-DD') as date,
     price,
     accommodates,
     has_availability,
-    availability_30,
+    availability_30, 
     COALESCE(NULLIF(number_of_reviews, NULL), 0) AS number_of_reviews,
     CASE
         WHEN review_scores_rating = 'NaN' THEN 0

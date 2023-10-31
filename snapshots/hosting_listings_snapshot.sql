@@ -17,6 +17,7 @@ host as (
     select DISTINCT
        SCRAPED_DATE,
        HOST_ID,
+       listing_id,
        HOST_NAME,
        HOST_SINCE,
        HOST_IS_SUPERHOST,

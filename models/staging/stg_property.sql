@@ -10,12 +10,14 @@ with source as (
 
  stg_property AS (
     SELECT
-        SCRAPED_DATE as date,
+        to_date(SCRAPED_DATE, 'YYYY-MM-DD') as date,
         listing_id,
         host_id,
         FIRST_VALUE(listing_neighbourhood) OVER (PARTITION BY listing_id ORDER BY SCRAPED_DATE) AS listing_neighbourhood,
         property_type,
-        room_type
+        room_type,
+        dbt_valid_from,
+        dbt_valid_to
     FROM source
 )
 SELECT * FROM stg_property
