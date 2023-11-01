@@ -1,3 +1,6 @@
+/*
+This SQL script updates the dbt_valid_to column in the raw.property_snapshot table by setting it to the next scraped_date value for each listing_id. It then selects data from the property_snapshot table and casts host_id and listing_id to integer data types. It also calculates the first value of listing_neighbourhood for each listing_id and sets dbt_valid_to to '9999-12-31' if it is null. The resulting data is then selected from the stg_property table.
+*/
 
 -- Update raw.property_snapshot  t1
 -- set dbt_valid_to = next_date

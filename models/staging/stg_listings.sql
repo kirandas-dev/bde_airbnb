@@ -1,3 +1,6 @@
+/*
+This SQL script selects data from the 'listings' table in the 'raw' schema and casts the 'host_id' and 'listing_id' columns to integers. It also converts the 'scraped_date' column to a date format of 'YYYY-MM-DD'. The 'number_of_reviews' column is replaced with 0 if it is null, and the 'review_scores_rating' column is replaced with 0 if it is 'NaN' or null. The resulting data is then selected and returned.
+*/
 {{
     config(
         target_schema='staging',

@@ -1,3 +1,6 @@
+/*
+This SQL script updates the dbt_valid_to column in the raw.room_snapshot table by setting it to the next scraped_date value for each host_id. It then selects data from the staging.stg_room table by casting host_id and listing_id to integer, and setting dbt_valid_to to '9999-12-31' if it is null. The data is selected from the room_snapshot table using the ref() function.
+*/
 
 -- Update raw.room_snapshot  t1
 -- set dbt_valid_to = next_date

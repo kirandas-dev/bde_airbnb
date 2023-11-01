@@ -1,3 +1,6 @@
+/*
+This SQL script selects data from the staging tables and joins them to create a fact table for the Airbnb listings in the warehouse schema. The script selects various dimensions such as listing_id, date, host_id, price, property_type, room_type, accommodates, has_availability, availability_30, number_of_reviews, review_scores_rating, and their respective attributes. The script also joins the staging tables stg_listings, stg_property, stg_host, stg_suburb, stg_lga, and stg_room to obtain the necessary data. The resulting fact table contains information about the Airbnb listings, their hosts, and their respective neighborhoods. 
+*/
 
 
 {{ config(

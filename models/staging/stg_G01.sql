@@ -1,3 +1,6 @@
+/*
+This SQL script loads data from the '2016Census_G01_NSW_LGA' table in the 'raw' schema and transforms it into the 'stg_G01' table in the 'staging' schema. The script casts the 'lga_code_2016' column to an integer and selects various demographic data columns from the source table. The resulting 'stg_G01' table contains demographic data for each local government area (LGA) in New South Wales (NSW), Australia. 
+*/
 {{
     config(
       target_schema='staging'

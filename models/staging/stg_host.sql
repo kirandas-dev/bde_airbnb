@@ -1,3 +1,12 @@
+/*
+This SQL script standardizes and transforms data from the source table 'host_snapshot' and loads it into the staging table 'stg_host'. 
+
+The script first defines a CTE to standardize the 'host_since' column and another CTE to format it as 'YYYY-MM-DD'. It also standardizes the 'host_is_superhost' and 'host_neighbourhood' columns by replacing null values with the maximum non-null value for each host_id. 
+
+The script then joins the resulting table with the 'property_snapshot' and 'stg_suburb' tables to obtain the suburb name for each host. Finally, it selects the required columns and loads the data into the 'stg_host' table.
+
+FILEPATH: /Users/tantri/Documents/My Research Material/UTSSpring23/Data Engineering/Assignment_3_BDE_AirBnb/BDE_AirBnB/models/staging/stg_host.sql
+*/
 -- Update raw.host_snapshot t1
 -- set dbt_valid_to = next_date
 -- from (

@@ -1,3 +1,6 @@
+/*
+This SQL script generates a datamart table that contains various metrics for Airbnb listings in different neighbourhoods. The metrics include the active listings rate, minimum price, maximum price, median price, average price, number of distinct hosts, superhost rate, average review scores rating, percentage change for active listings, percentage change for inactive listings, total number of stays, and average estimated revenue per active listings. The script reads data from the "facts_listing" table and writes the results to the "datamart" schema. 
+*/
 
 {{ config(
    

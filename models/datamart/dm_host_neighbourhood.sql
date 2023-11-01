@@ -1,3 +1,10 @@
+/*
+Calculates the estimated revenue and number of distinct hosts for each host neighbourhood and month/year combination. 
+The query uses the fact table 'facts_listing' and the dimension tables 'dim_suburb' and 'dim_lga' to join the data. 
+The results are grouped by host neighbourhood, month/year and aggregated to calculate the total number of distinct hosts, 
+estimated revenue and estimated revenue per host (distinct) for each group. 
+*/
+-- FILEPATH: /Users/tantri/Documents/My Research Material/UTSSpring23/Data Engineering/Assignment_3_BDE_AirBnb/BDE_AirBnB/models/datamart/dm_host_neighbourhood.sql
 {{ config(
     target_schema='datamart'
 ) }}
