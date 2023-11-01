@@ -1,9 +1,9 @@
 
--- Update public.property_snapshot  t1
+-- Update raw.property_snapshot  t1
 -- set dbt_valid_to = next_date
 -- from (
 -- select listing_id , scraped_date, lead(scraped_date) over (partition by listing_id order by scraped_date) as next_date
--- from public.property_snapshot) t2
+-- from raw.property_snapshot) t2
 -- where t1.listing_id=t2.listing_id and t1.scraped_date = t2.scraped_date;
 
 {{ config(

@@ -22,3 +22,6 @@ models:
     warehouse:
       +materialized: table
       +schema: warehouse   
+    datamart:
+      +materialized: view
+      +schema: datamart   
