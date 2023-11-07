@@ -20,7 +20,7 @@ WITH Listings AS (
         30 - "availability_30" AS "stays"
     FROM {{ ref('facts_listing') }}
 ),
-Metrics AS (
+Listing_Metrics AS (
     SELECT
         "listing_neighbourhood",
         "month/year",
@@ -32,8 +32,10 @@ Metrics AS (
         COUNT(DISTINCT "host_id") FILTER (WHERE "has_availability" = 't') AS "Number of Distinct Hosts",
         NULLIF(COUNT(DISTINCT CASE WHEN "host_is_superhost" = 't' THEN "host_id" END), 0) * 100.0 / NULLIF(COUNT(DISTINCT "host_id"), 0) AS "Superhost Rate",
         AVG("review_scores_rating") FILTER (WHERE "has_availability" = 't') AS "Average Review Scores Rating",
-        (LAG(COUNT(*) FILTER (WHERE "has_availability" = 't')) OVER (PARTITION BY "listing_neighbourhood", "month/year" ORDER BY "month/year") - COUNT(*) FILTER (WHERE "has_availability" = 't')) * 100.0 / NULLIF(LAG(COUNT(*) FILTER (WHERE "has_availability" = 't')) OVER (PARTITION BY "listing_neighbourhood", "month/year" ORDER BY "month/year"), 0) AS "Percentage Change for Active Listings",
-        (LAG(COUNT(*) FILTER (WHERE "has_availability" = 'f')) OVER (PARTITION BY "listing_neighbourhood", "month/year" ORDER BY "month/year") - COUNT(*) FILTER (WHERE "has_availability" = 'f')) * 100.0 / NULLIF(LAG(COUNT(*) FILTER (WHERE "has_availability" = 'f')) OVER (PARTITION BY "listing_neighbourhood", "month/year" ORDER BY "month/year"), 0) AS "Percentage Change for Inactive Listings",
+        COUNT(*) FILTER (WHERE "has_availability" = 't')  as active_currentcount,
+        LAG(COUNT(*) FILTER (WHERE "has_availability" = 't')) OVER (PARTITION BY "listing_neighbourhood" ORDER BY "month/year") as active_previouscount,
+        COUNT(*) FILTER (WHERE "has_availability" = 'f')  as inactive_currentcount,
+        LAG(COUNT(*) FILTER (WHERE "has_availability" = 'f')) OVER (PARTITION BY "listing_neighbourhood" ORDER BY "month/year") as inactive_previouscount,
         SUM("stays") AS "Total Number of Stays",
         NULLIF(SUM("stays" * "price"), 0) / NULLIF(COUNT(*), 0) AS "Average Estimated Revenue per Active Listings"
     FROM Listings
@@ -50,8 +52,8 @@ SELECT
     "Number of Distinct Hosts",
     "Superhost Rate",
     "Average Review Scores Rating",
-    "Percentage Change for Active Listings",
-    "Percentage Change for Inactive Listings",
+    ((active_currentcount - active_previouscount) * 100.0) / NULLIF(active_previouscount, 0) AS "Percentage change for active listings",
+    ((inactive_currentcount - inactive_previouscount) * 100.0) / NULLIF(inactive_previouscount, 0) AS "Percentage change for inactive listings",
     "Total Number of Stays",
     "Average Estimated Revenue per Active Listings"
-FROM Metrics
+FROM Listing_Metrics

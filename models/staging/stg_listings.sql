@@ -8,15 +8,26 @@ This SQL script selects data from the 'listings' table in the 'raw' schema and c
                 )
 }}
  
-with stg_listings as (
-    select * from {{ source('raw', 'listings') }}
+WITH stg_listings as (
+    SELECT * FROM {{ source('raw', 'listings') }}
+),
+listing_stats AS (
+    SELECT
+        listing_id AS listing_id_stats, -- Use an alias to disambiguate the column name
+        AVG(price) AS mean_price,
+        STDDEV(price) AS stddev_price
+    FROM stg_listings
+    GROUP BY listing_id
 )
  
 SELECT
-    CAST(host_id AS INT) as host_id, -- Cast host_id to integer
-    CAST(listing_id AS INT) as listing_id, -- Cast listing_id to integer
+    CAST(host_id AS INT) as host_id,
+    CAST(stg.listing_id AS INT) as listing_id, -- Qualify the column with the subquery name
     to_date(scraped_date, 'YYYY-MM-DD') as date,
-    price,
+    CASE
+        WHEN ABS(price - listing_stats.mean_price) <= 1.5 * listing_stats.stddev_price THEN price
+        ELSE listing_stats.mean_price
+    END AS price,
     accommodates,
     has_availability,
     availability_30, 
@@ -25,6 +36,5 @@ SELECT
         WHEN review_scores_rating = 'NaN' THEN 0
         ELSE COALESCE(review_scores_rating::numeric, 0)
     END AS review_scores_rating
-FROM stg_listings
-
-
+FROM stg_listings AS stg -- Use an alias for the main table
+JOIN listing_stats ON stg.listing_id = listing_stats.listing_id_stats
