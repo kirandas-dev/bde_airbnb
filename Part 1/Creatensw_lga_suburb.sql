@@ -1,0 +1,31 @@
+-- This SQL script creates a table named "raw.nsw_lga_suburb" with columns "lga_name" and "suburb_name" along with 25 other columns with null values. The purpose of this table is to store data related to Local Government Areas (LGA) and suburbs in New South Wales (NSW), Australia.
+
+CREATE TABLE raw.nsw_lga_suburb (
+	lga_name varchar(500) NULL,
+	suburb_name varchar(500) NULL,
+	column3 varchar(500) NULL,
+	column4 varchar(500) NULL,
+	column5 varchar(500) NULL,
+	column6 varchar(500) NULL,
+	column7 varchar(500) NULL,
+	column8 varchar(500) NULL,
+	column9 varchar(500) NULL,
+	column10 varchar(500) NULL,
+	column11 varchar(500) NULL,
+	column12 varchar(500) NULL,
+	column13 varchar(500) NULL,
+	column14 varchar(500) NULL,
+	column15 varchar(500) NULL,
+	column16 varchar(500) NULL,
+	column17 varchar(500) NULL,
+	column18 varchar(500) NULL,
+	column19 varchar(500) NULL,
+	column20 varchar(500) NULL,
+	column21 varchar(500) NULL,
+	column22 varchar(500) NULL,
+	column23 varchar(500) NULL,
+	column24 varchar(500) NULL,
+	column25 varchar(500) NULL,
+	column26 varchar(500) NULL,
+	column27 varchar(500) NULL
+);
